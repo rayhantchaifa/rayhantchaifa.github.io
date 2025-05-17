@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rayhan Tchaifa | Developer</title>
+  <style>
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #0f172a;
+      color: #e0e7ff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #3b82f6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 20px;
+    }
+
+    h1, h2 {
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      color: #2563eb;
+      animation: fadeInDown 1s ease forwards;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-top: 3rem;
+      color: #3b82f6;
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: #93c5fd;
+      margin-bottom: 2rem;
+      animation: fadeInUp 1.5s ease forwards;
+    }
+
+    section {
+      background: #1e293b;
+      padding: 1.5rem 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+    }
+    section:nth-child(2) { animation-delay: 1.6s; }
+    section:nth-child(3) { animation-delay: 1.8s; }
+    section:nth-child(4) { animation-delay: 2.0s; }
+    section:nth-child(5) { animation-delay: 2.2s; }
+    section.contact { animation-delay: 2.4s; }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    ul li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #334155;
+      transition: background-color 0.3s ease;
+      border-radius: 6px;
+    }
+    ul li:hover {
+      background-color: #2563eb;
+    }
+
+    .links a {
+      display: inline-block;
+      margin-right: 1.5rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding-bottom: 3px;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    .links a:hover {
+      border-color: #60a5fa;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Rayhan Tchaifa</h1>
+    <p class="tagline">Teen Developer | Learning & Building</p>
+
+    <section>
+      <h2>About Me</h2>
+      <p>
+        Hi, I’m Rayhan Tchaifa — a driven and enthusiastic young web developer based in Örebro, Sweden.
+        I have a strong passion for technology and coding, and I’m dedicated to growing my skills every day.
+        Currently, I’m focused on mastering HTML, CSS, and JavaScript to build clean, responsive, and modern websites that offer great user experiences.
+      </p>
+      <p>
+        Beyond coding, I love exploring new programming languages, frameworks, and tools that help me bring creative ideas to life.
+        I’m also committed to learning best practices in software development, version control with Git, and collaborating with other developers through platforms like GitHub.
+      </p>
+      <p>
+        My goal is to become a professional developer who builds impactful digital products that make a difference.
+        I enjoy challenges and problem-solving and constantly seek to improve through real projects and continuous learning.
+        Outside programming, I’m interested in tech trends, gaming, and engaging with developer communities.
+      </p>
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <ul>
+        <li>HTML5 & CSS3</li>
+        <li>JavaScript (ES6+)</li>
+        <li>Responsive Web Design</li>
+        <li>Git & GitHub</li>
+        <li>Basic Node.js</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Find Me Online</h2>
+      <div class="links">
+        <a href="https://github.com/rayhantchaifa" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://twitter.com/yourtwitterhandle" target="_blank" rel="noopener noreferrer">Twitter</a>
+      </div>
+    </section>
+
+    <section class="contact">
+      <p>Contact me at <a href="mailto:rayhantchaifa.dev@gmail.com">rayhantchaifa.dev@gmail.com</a></p>
+    </section>
+  </div>
+</body>
+</html>
