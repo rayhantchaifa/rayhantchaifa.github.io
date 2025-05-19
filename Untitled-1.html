@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Goon Simulator v2</title>
+<title>Goon Clicker v1</title>
 <style>
   body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -18,19 +18,19 @@
     text-shadow: 2px 2px #fff;
   }
   #icecream {
-    font-size: 5rem;
+    font-size: 6rem;
     margin: 1rem 0;
-    min-height: 5.5rem;
+    cursor: pointer;
   }
   button {
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
     border: none;
     border-radius: 10px;
     background-color: #ffb347;
     color: #fff;
     cursor: pointer;
-    margin: 0.7rem 1rem;
+    margin: 0.5rem 0.7rem;
     transition: transform 0.1s, background-color 0.3s;
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
   }
@@ -39,223 +39,269 @@
     background-color: #ff922b;
     box-shadow: 0 8px 15px rgba(0,0,0,0.2);
   }
-  #soldList {
-    margin-top: 2rem;
-    font-size: 1.1rem;
-    max-height: 150px;
-    overflow-y: auto;
-    border: 1px solid #fcb69f;
-    background: #fff8f0;
-    border-radius: 10px;
-    padding: 0.5rem;
-    text-align: left;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
+  #moneyDisplay, #conesDisplay, #message {
+    font-size: 1.3rem;
+    margin: 0.5rem 0;
   }
-  #message {
-    font-size: 1.5rem;
-    color: #6a1b9a;
-    margin-top: 1rem;
-    font-weight: bold;
-    min-height: 2.5rem;
-    margin-bottom: 0.5rem;
-  }
-  #moneyDisplay {
-    font-size: 1.5rem;
-    color: green;
-    font-weight: bold;
-    margin-top: 1rem;
-  }
-  #rebirthCostDisplay {
-    font-size: 1.2rem;
-    color: #b03a7a;
-    margin-top: 0.3rem;
-    font-weight: 600;
-  }
-  #leaderboard {
-    margin: 2rem auto;
-    width: 300px;
-    text-align: left;
+  #perks, #achievements, #leaderboard {
+    margin: 1.5rem auto;
+    width: 320px;
     border: 1px solid #fcb69f;
     background: #fff8f0;
     border-radius: 10px;
     padding: 1rem;
-    font-size: 1.1rem;
+    text-align: left;
   }
-  #perks {
-    margin-top: 1rem;
+  #leaderboard ol {
+    padding-left: 1.2rem;
   }
-  .skin-button {
-    margin: 0 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
+  .perk-button, .achievement-item {
+    display: block;
+    margin: 0.3rem 0;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
     border: 2px solid #ff4081;
-    cursor: pointer;
     background: white;
     color: #ff4081;
     font-weight: bold;
+    cursor: pointer;
   }
-  .skin-button.active {
+  .perk-button.active {
     background: #ff4081;
     color: white;
+    cursor: default;
   }
-  #usernamePrompt input {
-    font-size: 1.2rem;
-    padding: 0.3rem 0.6rem;
-    border-radius: 8px;
-    border: 1px solid #ff4081;
-    margin-right: 0.5rem;
+  .achievement-item.unlocked {
+    color: green;
+    font-weight: bold;
   }
 </style>
 </head>
 <body>
-<h1>Goon Simulator v2 🍦</h1>
-<p>Made by Rayhan Tchaifa</p>
 
-<div id="usernamePrompt">
-  <label for="username">What's your name, Gooner? </label>
-  <input type="text" id="username" placeholder="Type your name" />
-  <button id="startBtn">Start Gooning</button>
+<h1>Goon Clicker v1 🍦</h1>
+<p>Click the ice cream to serve cones!</p>
+
+<div id="icecream">🍦</div>
+<div id="conesDisplay">Cones: 0</div>
+<div id="moneyDisplay">Money: $0.00</div>
+<div id="message"></div>
+
+<button id="sellBtn">Sell Cones ($1 per cone)</button>
+<button id="upgradeBtn">Upgrade Cone (+1 per click) - Cost: $10</button>
+
+<div id="perks">
+  <h3>Perks</h3>
+  <button id="autoSellBtn" class="perk-button">Auto Sell (Cost: $50) - OFF</button>
+  <button id="doubleMoneyBtn" class="perk-button">Double Money (Cost: $75) - OFF</button>
 </div>
 
-<div id="gameArea" style="display:none">
-  <div id="icecream">🍦</div>
-  <div id="moneyDisplay">Money: $0.00</div>
-  <button id="goonBtn">Goon</button>
-  <button id="sellBtn">Sell</button>
-  <button id="buyUpgradeBtn">Buy Upgrade 🍨 (<span id="upgradeCost">20</span>$)</button>
-  <button id="rebirthBtn">Rebirth 💫 (<span id="rebirthCost">200</span>$)</button>
-  <div id="rebirthCostDisplay"></div>
+<div id="achievements">
+  <h3>Achievements</h3>
+  <ul id="achievementList">
+    <!-- Achievements will appear here -->
+  </ul>
+</div>
 
-  <div id="perks">
-    <h3>Perks</h3>
-    <button id="perkAutoSellBtn">Auto Sell ($100) - OFF</button>
-    <button id="perkDoubleMoneyBtn">Double Money ($150) - OFF</button>
-  </div>
-
-  <div>
-    <h3>Skins</h3>
-    <button class="skin-button active" data-skin="default">Default 🍦</button>
-    <button class="skin-button" data-skin="icecream">Ice Cream 🍨</button>
-    <button class="skin-button" data-skin="shaved">Shaved Ice 🍧</button>
-  </div>
-
-  <div id="message"></div>
-  <div id="soldList"></div>
-  <div id="leaderboard">
-    <h3>Leaderboard (Local)</h3>
-    <ol id="leaderboardList"></ol>
-  </div>
+<div id="leaderboard">
+  <h3>Leaderboard (Local)</h3>
+  <ol id="leaderboardList"></ol>
 </div>
 
 <script>
-  // Variables
-  let iceCreams = 0;
-  let userName = "Gooner";
-  let coneLevel = 1;
+(() => {
+  // Game state variables
+  let cones = 0;
   let money = 0;
+  let conesPerClick = 1;
+  let autoSellActive = false;
+  let doubleMoneyActive = false;
+  let autoSellInterval = null;
 
-  let upgradeCost = 20;
-  let rebirthCost = 200;
-  let rebirthMultiplier = 1;
+  // Achievements config
+  const achievements = [
+    { id: 1, text: "Sell 10 cones", condition: () => totalConesSold >= 10, unlocked: false },
+    { id: 2, text: "Earn $50", condition: () => money >= 50, unlocked: false },
+    { id: 3, text: "Upgrade cones 3 times", condition: () => upgradesBought >= 3, unlocked: false },
+    { id: 4, text: "Activate Auto Sell perk", condition: () => autoSellActive, unlocked: false },
+    { id: 5, text: "Earn $200", condition: () => money >= 200, unlocked: false },
+  ];
+  
+  // Track total cones sold and upgrades bought for achievements
+  let totalConesSold = 0;
+  let upgradesBought = 0;
 
-  let perks = {
-    autoSell: false,
-    doubleMoney: false
-  };
-
-  let skin = 'default';
-
-  // Cached elements
+  // Cached DOM elements
   const icecreamDiv = document.getElementById('icecream');
+  const conesDisplay = document.getElementById('conesDisplay');
   const moneyDisplay = document.getElementById('moneyDisplay');
-  const upgradeCostSpan = document.getElementById('upgradeCost');
-  const rebirthCostSpan = document.getElementById('rebirthCost');
-  const rebirthCostDisplay = document.getElementById('rebirthCostDisplay');
-  const soldList = document.getElementById('soldList');
   const messageDiv = document.getElementById('message');
+  const sellBtn = document.getElementById('sellBtn');
+  const upgradeBtn = document.getElementById('upgradeBtn');
+  const autoSellBtn = document.getElementById('autoSellBtn');
+  const doubleMoneyBtn = document.getElementById('doubleMoneyBtn');
+  const achievementList = document.getElementById('achievementList');
   const leaderboardList = document.getElementById('leaderboardList');
 
-  const goonBtn = document.getElementById('goonBtn');
-  const sellBtn = document.getElementById('sellBtn');
-  const buyUpgradeBtn = document.getElementById('buyUpgradeBtn');
-  const rebirthBtn = document.getElementById('rebirthBtn');
+  // Costs
+  let upgradeCost = 10;
+  let autoSellCost = 50;
+  let doubleMoneyCost = 75;
 
-  const perkAutoSellBtn = document.getElementById('perkAutoSellBtn');
-  const perkDoubleMoneyBtn = document.getElementById('perkDoubleMoneyBtn');
-
-  const skinButtons = document.querySelectorAll('.skin-button');
-
-  const usernamePrompt = document.getElementById('usernamePrompt');
-  const usernameInput = document.getElementById('username');
-  const startBtn = document.getElementById('startBtn');
-  const gameArea = document.getElementById('gameArea');
-
-  // Funny messages for flavor
-  const funnyMessages = [
-    "I need to GOON! 🖐️",
-    "More cones! The people are hungry!",
-    "Use the HAND! 🍦✋",
-    "Goon harder, NAME!",
-    "You call that gooning, NAME?",
-    "Goon power activated, NAME! 💪🍦",
-    "Cone-a-licious moment, NAME!",
-    "We sell ice cream, not dreams, NAME!",
-    "Double scoop goonage, NAME!",
-    "This is the GOON ERA, NAME!"
-  ];
-
-  // Save & Load game data
-  function saveGame() {
-    const data = {
-      userName,
-      iceCreams,
-      coneLevel,
-      money,
-      upgradeCost,
-      rebirthCost,
-      rebirthMultiplier,
-      perks,
-      skin
-    };
-    localStorage.setItem('goonSimSave', JSON.stringify(data));
-    saveLeaderboard();
+  // Update UI displays
+  function updateDisplays() {
+    conesDisplay.textContent = `Cones: ${cones}`;
+    moneyDisplay.textContent = `Money: $${money.toFixed(2)}`;
+    upgradeBtn.textContent = `Upgrade Cone (+1 per click) - Cost: $${upgradeCost}`;
+    autoSellBtn.textContent = `Auto Sell (Cost: $${autoSellCost}) - ${autoSellActive ? 'ON' : 'OFF'}`;
+    doubleMoneyBtn.textContent = `Double Money (Cost: $${doubleMoneyCost}) - ${doubleMoneyActive ? 'ON' : 'OFF'}`;
   }
 
-  function loadGame() {
-    const data = JSON.parse(localStorage.getItem('goonSimSave'));
-    if (data) {
-      userName = data.userName || userName;
-      iceCreams = data.iceCreams || 0;
-      coneLevel = data.coneLevel || 1;
-      money = data.money || 0;
-      upgradeCost = data.upgradeCost || 20;
-      rebirthCost = data.rebirthCost || 200;
-      rebirthMultiplier = data.rebirthMultiplier || 1;
-      perks = data.perks || { autoSell: false, doubleMoney: false };
-      skin = data.skin || 'default';
-      return true;
+  // Show messages to player briefly
+  function showMessage(text) {
+    messageDiv.textContent = text;
+    setTimeout(() => {
+      if (messageDiv.textContent === text) messageDiv.textContent = '';
+    }, 2500);
+  }
+
+  // Handle click on ice cream
+  icecreamDiv.addEventListener('click', () => {
+    cones += conesPerClick;
+    updateDisplays();
+    checkAchievements();
+  });
+
+  // Sell cones button
+  sellBtn.addEventListener('click', () => {
+    if (cones < 1) {
+      showMessage("You have no cones to sell!");
+      return;
     }
-    return false;
+    const earnings = cones * (doubleMoneyActive ? 2 : 1);
+    money += earnings;
+    totalConesSold += cones;
+    cones = 0;
+    updateDisplays();
+    showMessage(`Sold cones for $${earnings.toFixed(2)}!`);
+    checkAchievements();
+    saveGame();
+    updateLeaderboard();
+  });
+
+  // Upgrade button
+  upgradeBtn.addEventListener('click', () => {
+    if (money < upgradeCost) {
+      showMessage("Not enough money to upgrade!");
+      return;
+    }
+    money -= upgradeCost;
+    conesPerClick += 1;
+    upgradesBought += 1;
+    upgradeCost = Math.floor(upgradeCost * 1.6);
+    updateDisplays();
+    showMessage("Cone upgraded! You click harder now.");
+    checkAchievements();
+    saveGame();
+  });
+
+  // Auto Sell perk button
+  autoSellBtn.addEventListener('click', () => {
+    if (autoSellActive) {
+      showMessage("Auto Sell is already active!");
+      return;
+    }
+    if (money < autoSellCost) {
+      showMessage("Not enough money to buy Auto Sell!");
+      return;
+    }
+    money -= autoSellCost;
+    autoSellActive = true;
+    updateDisplays();
+    showMessage("Auto Sell activated! Selling cones every 5 seconds.");
+
+    autoSellInterval = setInterval(() => {
+      if (cones > 0) {
+        const earnings = cones * (doubleMoneyActive ? 2 : 1);
+        money += earnings;
+        totalConesSold += cones;
+        cones = 0;
+        updateDisplays();
+        showMessage("Auto Sold your cones!");
+        checkAchievements();
+        saveGame();
+        updateLeaderboard();
+      }
+    }, 5000);
+
+    checkAchievements();
+    saveGame();
+  });
+
+  // Double Money perk button
+  doubleMoneyBtn.addEventListener('click', () => {
+    if (doubleMoneyActive) {
+      showMessage("Double Money is already active!");
+      return;
+    }
+    if (money < doubleMoneyCost) {
+      showMessage("Not enough money to buy Double Money!");
+      return;
+    }
+    money -= doubleMoneyCost;
+    doubleMoneyActive = true;
+    updateDisplays();
+    showMessage("Double Money perk activated! You earn twice as much.");
+
+    checkAchievements();
+    saveGame();
+  });
+
+  // Achievements display and check
+  function renderAchievements() {
+    achievementList.innerHTML = '';
+    for (const ach of achievements) {
+      const li = document.createElement('li');
+      li.textContent = ach.text;
+      li.className = 'achievement-item' + (ach.unlocked ? ' unlocked' : '');
+      achievementList.appendChild(li);
+    }
   }
 
-  // Leaderboard (localStorage)
+  function checkAchievements() {
+    let unlockedNew = false;
+    for (const ach of achievements) {
+      if (!ach.unlocked && ach.condition()) {
+        ach.unlocked = true;
+        showMessage(`Achievement unlocked: ${ach.text}`);
+        unlockedNew = true;
+      }
+    }
+    if (unlockedNew) renderAchievements();
+  }
+
+  // Leaderboard save/load (localStorage)
   function saveLeaderboard() {
+    const name = prompt("Enter your name for the leaderboard:") || "Anonymous";
     let lb = JSON.parse(localStorage.getItem('goonLeaderboard')) || [];
-    const index = lb.findIndex(e => e.name === userName);
-    if (index >= 0) {
-      if (lb[index].money < money) lb[index].money = money;
+    const existing = lb.find(e => e.name === name);
+    if (existing) {
+      if (existing.money < money) existing.money = money;
     } else {
-      lb.push({name: userName, money});
+      lb.push({name, money});
     }
     lb.sort((a,b) => b.money - a.money);
     if (lb.length > 10) lb = lb.slice(0, 10);
     localStorage.setItem('goonLeaderboard', JSON.stringify(lb));
+    renderLeaderboard();
   }
 
-  function updateLeaderboard() {
-    const lb = JSON.parse(localStorage.getItem('goonLeaderboard')) || [];
+  function loadLeaderboard() {
+    renderLeaderboard();
+  }
+
+  function renderLeaderboard() {
+    let lb = JSON.parse(localStorage.getItem('goonLeaderboard')) || [];
     leaderboardList.innerHTML = '';
     for (const entry of lb) {
       const li = document.createElement('li');
@@ -264,13 +310,81 @@
     }
   }
 
-  // Utility: Get emoji for current skin
-  function getSkinEmoji() {
-    switch (skin) {
-      case 'icecream': return '🍨';
-      case 'shaved': return '🍧';
-      default: return '🍦';
+  // Save/load game data
+  function saveGame() {
+    const saveData = {
+      cones,
+      money,
+      conesPerClick,
+      autoSellActive,
+      doubleMoneyActive,
+      totalConesSold,
+      upgradesBought,
+      achievements: achievements.map(a => a.unlocked),
+      upgradeCost,
+      autoSellCost,
+      doubleMoneyCost
+    };
+    localStorage.setItem('goonClickerSave', JSON.stringify(saveData));
+  }
+
+  function loadGame() {
+    const saveData = JSON.parse(localStorage.getItem('goonClickerSave'));
+    if (!saveData) return;
+
+    cones = saveData.cones || 0;
+    money = saveData.money || 0;
+    conesPerClick = saveData.conesPerClick || 1;
+    autoSellActive = saveData.autoSellActive || false;
+    doubleMoneyActive = saveData.doubleMoneyActive || false;
+    totalConesSold = saveData.totalConesSold || 0;
+    upgradesBought = saveData.upgradesBought || 0;
+    upgradeCost = saveData.upgradeCost || 10;
+    autoSellCost = saveData.autoSellCost || 50;
+    doubleMoneyCost = saveData.doubleMoneyCost || 75;
+
+    if (saveData.achievements) {
+      for (let i = 0; i < saveData.achievements.length; i++) {
+        achievements[i].unlocked = saveData.achievements[i];
+      }
+    }
+
+    // If auto sell was active, restart interval
+    if (autoSellActive) {
+      autoSellInterval = setInterval(() => {
+        if (cones > 0) {
+          const earnings = cones * (doubleMoneyActive ? 2 : 1);
+          money += earnings;
+          totalConesSold += cones;
+          cones = 0;
+          updateDisplays();
+          showMessage("Auto Sold your cones!");
+          checkAchievements();
+          saveGame();
+          updateLeaderboard();
+        }
+      }, 5000);
     }
   }
 
-  // Update ice cream display, numeric if
+  // Init game
+  function init() {
+    updateDisplays();
+    renderAchievements();
+    loadLeaderboard();
+    loadGame();
+    updateDisplays();
+    checkAchievements();
+  }
+
+  // Update leaderboard display without prompting name repeatedly
+  function updateLeaderboard() {
+    renderLeaderboard();
+  }
+
+  init();
+})();
+</script>
+
+</body>
+</html>
